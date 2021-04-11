@@ -23,4 +23,9 @@ namespace HotelListing.Models
 
         public IList<HotelDTO> Hotels { get; set; }
     }
+
+    public class UpdateCountryDTO : CreateCountryDTO
+    {
+        //public List<CreateHotelDTO> Hotels { get; set; }
+    }
 }

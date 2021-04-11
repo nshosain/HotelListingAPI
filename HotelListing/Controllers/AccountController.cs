@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HotelListing.Data;
+using HotelListing.IRepository;
 using HotelListing.Models;
 using HotelListing.Services;
 using Microsoft.AspNetCore.Http;
@@ -22,7 +23,7 @@ namespace HotelListing.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly IMapper _mapper;
 
-        public AccountController(UserManager<ApiUser> userManager,  
+        public AccountController(UserManager<ApiUser> userManager,
                                 ILogger<AccountController> logger,
                                 IAuthManager authManager,
                                 IMapper mapper)
@@ -60,7 +61,7 @@ namespace HotelListing.Controllers
 
                     return BadRequest(ModelState);
                 }
-                
+
                 await _userManager.AddToRolesAsync(user, userDTO.Roles);
 
                 return Accepted();
@@ -68,7 +69,7 @@ namespace HotelListing.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Something went wrong in the {nameof(Register)}");
-                return Problem($"Something went wrong in the {nameof(Register)}", statusCode: 500); 
+                return Problem($"Something went wrong in the {nameof(Register)}", statusCode: 500);
             }
         }
 
@@ -90,14 +91,15 @@ namespace HotelListing.Controllers
                     return Unauthorized();
                 }
 
-                return Accepted(new { Token = await _authManager.CreateToken()});
+                return Accepted(new { Token = await _authManager.CreateToken() });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Something went wrong in the {nameof(Login)}");
                 return Problem($"Something went wrong in the {nameof(Login)}", statusCode: 500);
             }
-        }
+        } 
+
     }
 
         
